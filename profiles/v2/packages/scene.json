@@ -42,5 +42,95 @@
   "rect-snap-configs": {
     "enableSnapping": true,
     "snapThreshold": 4
+  },
+  "float-window": {
+    "position": {
+      "cc": {
+        "Camera": {
+          "dock": false,
+          "top": null,
+          "bottom": 10,
+          "left": null,
+          "right": 10
+        }
+      }
+    }
+  },
+  "camera-infos": {
+    "e6e84955-1d2d-49d3-bfc9-0ab7a6f6b644": {
+      "position": {
+        "x": 640,
+        "y": 512.25,
+        "z": 5000
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "viewCenter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contentRect": {
+        "x": 0,
+        "y": 464.5,
+        "width": 751.8,
+        "height": 56.091328125
+      },
+      "scale": 0.5873437499999999
+    },
+    "98121a62-b949-49e0-a93f-3d22103cc784": {
+      "position": {
+        "x": 709.1175432320163,
+        "y": 352.6695270457575,
+        "z": 5000
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "viewCenter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contentRect": {
+        "x": 113.422822751374,
+        "y": 67.5791300931969,
+        "width": 1074,
+        "height": 514
+      },
+      "scale": 0.9014684561359151
+    }
+  },
+  "camera-uuids": [
+    "e6e84955-1d2d-49d3-bfc9-0ab7a6f6b644",
+    "98121a62-b949-49e0-a93f-3d22103cc784"
+  ],
+  "camera": {
+    "color": [
+      48,
+      48,
+      48,
+      255
+    ],
+    "fov": 45,
+    "far": 10000,
+    "near": 0.01,
+    "wheelSpeed": 0.01,
+    "wanderSpeed": 10,
+    "enableAcceleration": true,
+    "size": "__default_design__",
+    "far2D": 10000,
+    "near2D": 1,
+    "wheelSpeed2D": 6,
+    "iso": 0,
+    "aperture": 19,
+    "shutter": 7
   }
 }
