@@ -13,13 +13,14 @@ export class AuthManager {
   }
 
   // API của bạn chạy port 4000
-  private baseUrl = "http://127.0.0.1:4000";
+  // private baseUrl = "http://127.0.0.1:4000";
+  private publicUrl = "https://backend-survive-game.onrender.com";
 
   async login(email: string, password: string) {
     try {
-      console.log("Calling API:", `${this.baseUrl}/auth/login`);
+      console.log("Calling API:", `${this.publicUrl}/auth/login`);
 
-      const response = await fetch(`${this.baseUrl}/auth/login`, {
+      const response = await fetch(`${this.publicUrl}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +62,7 @@ export class AuthManager {
 
   async checkLogin() {
     try {
-      const response = await fetch(`${this.baseUrl}/auth/me`, {
+      const response = await fetch(`${this.publicUrl}/auth/me`, {
         method: "GET",
         credentials: "include",
       });
@@ -77,7 +78,7 @@ export class AuthManager {
 
   async logout() {
     try {
-      await fetch(`${this.baseUrl}/auth/logout`, {
+      await fetch(`${this.publicUrl}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });

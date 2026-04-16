@@ -1,6 +1,114 @@
 {
   "__version__": "1.3.9",
   "log": {
-    "level": 2
+    "level": 1
+  },
+  "common": {
+    "binGroupConfig": {
+      "threshold": 16,
+      "enable": false
+    },
+    "polyfills": {
+      "asyncFunctions": true
+    },
+    "buildPath": "project://build",
+    "outputName": "web-mobile",
+    "mainBundleCompressionType": "merge_dep",
+    "platform": "web-mobile",
+    "startScene": "98121a62-b949-49e0-a93f-3d22103cc784",
+    "scenes": [
+      {
+        "url": "db://assets/scenes/Login.scene",
+        "uuid": "98121a62-b949-49e0-a93f-3d22103cc784"
+      },
+      {
+        "url": "db://assets/scenes/Menu.scene",
+        "uuid": "e52cf552-dff2-4fe8-9d63-6b452ea887c5"
+      }
+    ]
+  },
+  "BuildTaskManager": {
+    "taskMap": {
+      "1776267493989": {
+        "type": "build",
+        "id": "1776267493989",
+        "progress": 1,
+        "state": "success",
+        "stage": "build",
+        "message": "4-16-2026 09:42:52 build -> run success in 1 min 33 s!",
+        "detailMessage": "// ---- build task cocos-service：onAfterBuild ----\r",
+        "options": {
+          "name": "coop-survive",
+          "server": "",
+          "engineModulesConfigKey": "defaultConfig",
+          "platform": "web-mobile",
+          "buildPath": "project://build",
+          "debug": false,
+          "buildMode": "normal",
+          "mangleProperties": false,
+          "md5Cache": false,
+          "skipCompressTexture": false,
+          "sourceMaps": false,
+          "overwriteProjectSettings": {
+            "includeModules": {
+              "gfx-webgl2": "on",
+              "physics": "inherit-project-setting",
+              "physics-2d": "inherit-project-setting"
+            },
+            "macroConfig": {
+              "cleanupImageCache": "inherit-project-setting"
+            }
+          },
+          "nativeCodeBundleMode": "both",
+          "polyfills": {
+            "asyncFunctions": true
+          },
+          "experimentalEraseModules": false,
+          "startSceneAssetBundle": false,
+          "bundleConfigs": [],
+          "inlineEnum": true,
+          "useBuiltinServer": false,
+          "md5CacheOptions": {
+            "excludes": [],
+            "includes": [],
+            "replaceOnly": [],
+            "handleTemplateMd5Link": true
+          },
+          "mainBundleIsRemote": false,
+          "mainBundleCompressionType": "merge_dep",
+          "useSplashScreen": true,
+          "bundleCommonChunk": false,
+          "packAutoAtlas": true,
+          "startScene": "98121a62-b949-49e0-a93f-3d22103cc784",
+          "outputName": "web-mobile",
+          "taskName": "web-mobile",
+          "scenes": [
+            {
+              "url": "db://assets/scenes/Login.scene",
+              "uuid": "98121a62-b949-49e0-a93f-3d22103cc784"
+            },
+            {
+              "url": "db://assets/scenes/Menu.scene",
+              "uuid": "e52cf552-dff2-4fe8-9d63-6b452ea887c5"
+            }
+          ],
+          "wasmCompressionMode": false,
+          "binGroupConfig": {
+            "threshold": 16,
+            "enable": false
+          },
+          "packages": {},
+          "__version__": "1.3.9",
+          "buildStageGroup": {
+            "build": [
+              "run"
+            ]
+          },
+          "logDest": "project://temp/builder/log/web-mobile4-15-2026 22-38.log"
+        },
+        "time": "4-16-2026 09:41:19",
+        "dirty": false
+      }
+    }
   }
 }
