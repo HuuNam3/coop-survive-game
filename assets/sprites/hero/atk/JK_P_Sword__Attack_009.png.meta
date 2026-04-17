@@ -1,0 +1,134 @@
+{
+  "ver": "1.0.27",
+  "importer": "image",
+  "imported": true,
+  "uuid": "70c4a975-b0a3-48db-8f5d-8e39cbed4057",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "70c4a975-b0a3-48db-8f5d-8e39cbed4057@6c48a",
+      "displayName": "JK_P_Sword__Attack_009",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "70c4a975-b0a3-48db-8f5d-8e39cbed4057",
+        "isUuid": true,
+        "visible": false,
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "70c4a975-b0a3-48db-8f5d-8e39cbed4057@f9941",
+      "displayName": "JK_P_Sword__Attack_009",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": -32,
+        "offsetY": -1.5,
+        "trimX": 41,
+        "trimY": 26,
+        "width": 386,
+        "height": 403,
+        "rawWidth": 532,
+        "rawHeight": 452,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -193,
+            -201.5,
+            0,
+            193,
+            -201.5,
+            0,
+            -193,
+            201.5,
+            0,
+            193,
+            201.5,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            41,
+            426,
+            427,
+            426,
+            41,
+            23,
+            427,
+            23
+          ],
+          "nuv": [
+            0.07706766917293233,
+            0.05088495575221239,
+            0.8026315789473685,
+            0.05088495575221239,
+            0.07706766917293233,
+            0.9424778761061947,
+            0.8026315789473685,
+            0.9424778761061947
+          ],
+          "minPos": [
+            -193,
+            -201.5,
+            0
+          ],
+          "maxPos": [
+            193,
+            201.5,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "70c4a975-b0a3-48db-8f5d-8e39cbed4057@6c48a",
+        "atlasUuid": ""
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "type": "sprite-frame",
+    "hasAlpha": true,
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "70c4a975-b0a3-48db-8f5d-8e39cbed4057@6c48a"
+  }
+}
