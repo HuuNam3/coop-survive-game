@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Sprite, Color } from 'cc';
+import { _decorator, Component, Node, Sprite, Color, director } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('MenuUi')
@@ -76,4 +76,8 @@ export class MenuUi extends Component {
             console.warn('Target node is null');
         }
     }
+
+    onloadGame() {
+        director.loadScene("Game");
+    } 
 }

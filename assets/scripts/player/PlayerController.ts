@@ -1,340 +1,259 @@
 import {
-    _decorator,
-    Component,
-    Vec3,
-    input,
-    Input,
-    EventKeyboard,
-    KeyCode,
-    RigidBody2D,
-    Collider2D,
-    Contact2DType,
-    Animation,
-} from 'cc';
+  _decorator,
+  Component,
+  Vec3,
+  input,
+  Input,
+  EventKeyboard,
+  KeyCode,
+  RigidBody2D,
+  Collider2D,
+  Contact2DType,
+  Animation,
+  Vec2,
+} from "cc";
 
 const { ccclass, property } = _decorator;
 
-@ccclass('PlayerController')
+@ccclass("PlayerController")
 export class PlayerController extends Component {
+  @property
+  speed: number = 200;
 
-    @property
-    speed: number = 200;
+  @property
+  jumpForce: number = 10;
 
-    @property
-    jumpForce: number = 10;
+  @property
+  debug: boolean = true;
 
-    @property
-    debug: boolean = true;
+  @property
+  maxHp: number = 100;
 
-    @property
-    maxHp: number = 100;
+  @property
+  attackPower: number = 10;
 
-    @property
-    attackPower: number = 10;
+  @property
+  armor: number = 0;
 
-    @property
-    armor: number = 0;
+  private _attackCooldown: number = 0.5; // 0.5s
+  private _lastAttackTime: number = 0;
 
-    private _attackCooldown: number = 0.5; // 0.5s
-    private _lastAttackTime: number = 0;
+  private _hp: number = 100;
+  private _isDead: boolean = false;
 
-    private _hp: number = 100;
-    private _isDead: boolean = false;
+  private _dirX: number = 0;
 
-    private _dirX: number = 0;
+  private _rb: RigidBody2D | null = null;
+  private _isGrounded: boolean = true;
+  private _isAttacking: boolean = false;
 
-    private _rb: RigidBody2D | null = null;
-    private _isGrounded: boolean = true;
-    private _isAttacking: boolean = false;
+  private _anim: Animation | null = null;
+  private _currentAnim: string = "";
 
-    private _anim: Animation | null = null;
-    private _currentAnim: string = '';
+  private _tmpPos = new Vec3();
 
-    private _tmpPos = new Vec3();
+  start() {
+    this._hp = this.maxHp;
+    this._rb = this.getComponent(RigidBody2D);
+    this._anim = this.getComponent(Animation);
 
-    start() {
-        this._hp = this.maxHp;
-        this._rb = this.getComponent(RigidBody2D);
-        this._anim = this.getComponent(Animation);
+    const collider = this.getComponent(Collider2D);
 
-        const collider = this.getComponent(Collider2D);
-
-        if (collider) {
-            collider.on(
-                Contact2DType.BEGIN_CONTACT,
-                this.onBeginContact,
-                this
-            );
-        }
-
-        if (this._rb) {
-            this._rb.fixedRotation = true;
-        }
-
-        input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
-        input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
-
-        console.log("Player ready");
-
-        this.playAnim('idle');
+    if (collider) {
+      collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
     }
 
-    update(dt: number) {
-
-        if (this._dirX === 0) {
-
-            if (this._isGrounded && !this._isAttacking) {
-                this.playAnim('idle');
-            }
-
-            return;
-        }
-
-        // ---- MOVE ----
-
-        this._tmpPos.set(this.node.position);
-
-        this._tmpPos.x += this._dirX * this.speed * dt;
-
-        this.node.setPosition(this._tmpPos);
-
-        // ---- FACING ----
-
-        if (this._dirX === -1) {
-
-            if (this.node.scale.x !== -1) {
-                this.node.setScale(-1, 1, 1);
-            }
-
-        } else {
-
-            if (this.node.scale.x !== 1) {
-                this.node.setScale(1, 1, 1);
-            }
-
-        }
-
-        // ---- ANIMATION ----
-
-        if (this._isGrounded && !this._isAttacking) {
-            this.playAnim('move');
-        }
-
+    if (this._rb) {
+      this._rb.fixedRotation = true;
     }
 
-    private onKeyDown(event: EventKeyboard) {
+    input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
+    input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
 
-        console.log("Key down:", event.keyCode);
+    console.log("Player ready");
 
-        switch (event.keyCode) {
+    this.playAnim("idle");
+  }
 
-            case KeyCode.KEY_A:
-                this._dirX = -1;
-                break;
+  update(dt: number) {
+    if (!this._rb) return;
 
-            case KeyCode.KEY_D:
-                this._dirX = 1;
-                break;
+    const velocity = this._rb.linearVelocity;
 
-            case KeyCode.SPACE:
-                this.jump();
-                break;
+    // 🔥 MOVE bằng physics
+    velocity.x = this._dirX * this.speed;
 
-            case KeyCode.KEY_J:
-                this.attack();
-                break;
+    this._rb.linearVelocity = velocity;
 
-            case KeyCode.KEY_W:
-                this.interact();
-                break;
-        }
+    // ---- FACING ----
+    if (this._dirX === -1) {
+      this.node.setScale(-1, 1, 1);
+    } else if (this._dirX === 1) {
+      this.node.setScale(1, 1, 1);
     }
 
-    private onKeyUp(event: EventKeyboard) {
+    // ---- ANIMATION ----
+    if (this._dirX === 0) {
+      if (this._isGrounded && !this._isAttacking) {
+        this.playAnim("idle");
+      }
+    } else {
+      if (this._isGrounded && !this._isAttacking) {
+        this.playAnim("move");
+      }
+    }
+  }
 
-        switch (event.keyCode) {
+  private onKeyDown(event: EventKeyboard) {
+    console.log("Key down:", event.keyCode);
 
-            case KeyCode.KEY_A:
-                if (this._dirX === -1)
-                    this._dirX = 0;
-                break;
+    switch (event.keyCode) {
+      case KeyCode.KEY_A:
+        this._dirX = -1;
+        break;
 
-            case KeyCode.KEY_D:
-                if (this._dirX === 1)
-                    this._dirX = 0;
-                break;
-        }
+      case KeyCode.KEY_D:
+        this._dirX = 1;
+        break;
+
+      case KeyCode.SPACE:
+        this.jump();
+        break;
+
+      case KeyCode.KEY_J:
+        this.attack();
+        break;
+
+      case KeyCode.KEY_W:
+        this.interact();
+        break;
+    }
+  }
+
+  private onKeyUp(event: EventKeyboard) {
+    switch (event.keyCode) {
+      case KeyCode.KEY_A:
+        if (this._dirX === -1) this._dirX = 0;
+        break;
+
+      case KeyCode.KEY_D:
+        if (this._dirX === 1) this._dirX = 0;
+        break;
+    }
+  }
+
+  private jump() {
+    if (!this._rb || !this._isGrounded) return;
+
+    this._rb.linearVelocity = new Vec2(
+      this._rb.linearVelocity.x,
+      this.jumpForce,
+    );
+
+    this._isGrounded = false;
+
+    this.playAnim("jump");
+  }
+
+  private attack() {
+    if (this._isAttacking || this._isDead) return;
+
+    const now = Date.now() / 1000;
+
+    if (now - this._lastAttackTime < this._attackCooldown) return;
+
+    this._lastAttackTime = now;
+
+    this._isAttacking = true;
+
+    this.playAnim("atk");
+
+    const state = this._anim?.getState("atk");
+
+    if (!state) {
+      this._isAttacking = false;
+
+      return;
     }
 
-    private jump() {
+    state.once(Animation.EventType.FINISHED, () => {
+      this._isAttacking = false;
 
-        if (!this._rb || !this._isGrounded)
-            return;
+      this.updateAnimationAfterAttack();
+    });
+  }
 
-        const velocity =
-            this._rb.linearVelocity;
-
-        velocity.y = this.jumpForce;
-
-        this._rb.linearVelocity = velocity;
-
-        this._isGrounded = false;
-
-        this.playAnim('jump');
+  private updateAnimationAfterAttack() {
+    if (!this._isGrounded) {
+      this.playAnim("jump");
+      return;
     }
 
-    private attack() {
+    if (this._dirX !== 0) {
+      this.playAnim("move");
+    } else {
+      this.playAnim("idle");
+    }
+  }
 
-        if (this._isAttacking || this._isDead)
-            return;
+  takeDamage(damage: number) {
+    if (this._isDead) return;
 
-        const now = Date.now() / 1000;
+    // Công thức giảm sát thương theo giáp
+    const finalDamage = Math.max(1, damage - this.armor);
 
-        if (now - this._lastAttackTime < this._attackCooldown)
-            return;
+    this._hp -= finalDamage;
 
-        this._lastAttackTime = now;
+    console.log("Nhận damage:", finalDamage, "HP còn:", this._hp);
 
-        this._isAttacking = true;
+    // Animation bị đánh (nếu có)
+    this.playAnim("hurt");
 
-        this.playAnim('atk');
+    if (this._hp <= 0) {
+      this.die();
+    }
+  }
 
-        const state =
-            this._anim?.getState('atk');
+  die() {
+    if (this._isDead) return;
 
-        if (!state) {
+    this._isDead = true;
 
-            this._isAttacking = false;
+    this.playAnim("dead");
 
-            return;
+    console.log("Player chết");
 
-        }
+    // Tắt điều khiển
+    this.enabled = false;
+  }
 
-        state.once(
-            Animation.EventType.FINISHED,
-            () => {
+  heal(amount: number) {
+    if (this._isDead) return;
 
-                this._isAttacking = false;
+    this._hp += amount;
 
-                this.updateAnimationAfterAttack();
-
-            }
-        );
-
+    if (this._hp > this.maxHp) {
+      this._hp = this.maxHp;
     }
 
-    private updateAnimationAfterAttack() {
+    console.log("Hồi máu:", amount, "HP:", this._hp);
+  }
 
-        if (!this._isGrounded) {
+  private interact() {
+    console.log("Interact key pressed");
+  }
 
-            this.playAnim('jump');
-            return;
+  private playAnim(name: string) {
+    if (!this._anim) return;
 
-        }
+    if (this._currentAnim === name) return;
 
-        if (this._dirX !== 0) {
+    this._anim.play(name);
 
-            this.playAnim('move');
+    this._currentAnim = name;
+  }
 
-        } else {
-
-            this.playAnim('idle');
-
-        }
-
-    }
-
-    takeDamage(damage: number) {
-
-        if (this._isDead)
-            return;
-
-        // Công thức giảm sát thương theo giáp
-        const finalDamage =
-            Math.max(1, damage - this.armor);
-
-        this._hp -= finalDamage;
-
-        console.log(
-            "Nhận damage:",
-            finalDamage,
-            "HP còn:",
-            this._hp
-        );
-
-        // Animation bị đánh (nếu có)
-        this.playAnim("hurt");
-
-        if (this._hp <= 0) {
-
-            this.die();
-
-        }
-
-    }
-
-    die() {
-
-        if (this._isDead)
-            return;
-
-        this._isDead = true;
-
-        this.playAnim("dead");
-
-        console.log("Player chết");
-
-        // Tắt điều khiển
-        this.enabled = false;
-
-    }
-
-    heal(amount: number) {
-
-        if (this._isDead)
-            return;
-
-        this._hp += amount;
-
-        if (this._hp > this.maxHp) {
-
-            this._hp = this.maxHp;
-
-        }
-
-        console.log(
-            "Hồi máu:",
-            amount,
-            "HP:",
-            this._hp
-        );
-
-    }
-
-    private interact() {
-
-        console.log("Interact key pressed");
-
-    }
-
-    private playAnim(name: string) {
-
-        if (!this._anim)
-            return;
-
-        if (this._currentAnim === name)
-            return;
-
-        this._anim.play(name);
-
-        this._currentAnim = name;
-
-    }
-
-    private onBeginContact() {
-
-        this._isGrounded = true;
-
-    }
-
+  private onBeginContact() {
+    this._isGrounded = true;
+  }
 }
