@@ -36,11 +36,11 @@
       "1776267493989": {
         "type": "build",
         "id": "1776267493989",
-        "progress": 0.17272727272727273,
-        "state": "processing",
+        "progress": 1,
+        "state": "success",
         "stage": "build",
-        "message": "Build script start",
-        "detailMessage": "// ---- build task Query asset bundle ----\r",
+        "message": "5-4-2026 19:00:21 build success in 1 min 49 s!",
+        "detailMessage": "Asset DB is resume!\r",
         "options": {
           "name": "coop-survive",
           "server": "",

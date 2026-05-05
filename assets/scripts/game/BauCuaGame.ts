@@ -4,36 +4,39 @@ import {
     Button,
     RichText,
     Label,
-    Color
+    Color,
+    Sprite, 
+    SpriteFrame
 } from 'cc';
+
+import { MathUtil } from '../utils/MathUtil';
 
 const { ccclass, property } = _decorator;
 
 @ccclass('BauCuaGame')
 export class BauCuaGame extends Component {
 
-    // 💰 Hiển thị tiền
     @property(RichText)
     moneyText: RichText = null!;
 
-    // 🎯 6 ô cược
     @property([Button])
     betButtons: Button[] = [];
 
-    // 🎲 3 kết quả
     @property([Button])
     resultButtons: Button[] = [];
 
-    // 💵 12 mức cược
+    @property([SpriteFrame])
+    animalSprites: SpriteFrame[] = []; // 6 con
+
+    @property(SpriteFrame)
+    unknownSprite: SpriteFrame = null!; // ảnh chưa mở
+
     @property([Button])
     betValueButtons: Button[] = [];
 
-    // 🔁 chơi lại
     @property(Button)
     replayButton: Button = null!;
 
-    // =========================
-    // DATA
     // =========================
     private money: number = 100000;
     private currentBetValue: number = 1000;
@@ -44,6 +47,7 @@ export class BauCuaGame extends Component {
 
     private selectedBetIndex: number = 0;
     private hasRolled: boolean = false;
+    private isBetLocked: boolean = false;
 
     private animals = ['🦌','🍐','🐓','🐟','🦀','🦐'];
 
@@ -61,7 +65,8 @@ export class BauCuaGame extends Component {
     // 💰 MONEY
     // =========================
     updateMoneyUI() {
-        this.moneyText.string = `<color=#FFD700>${this.money}₫</color>`;
+        const formatted = MathUtil.formatNumber(this.money);
+        this.moneyText.string = `<color=#FFFFFF>Tiền của bạn: </color><color=#FFD700>${formatted}</color>`;
     }
 
     // =========================
@@ -78,6 +83,9 @@ export class BauCuaGame extends Component {
     }
 
     placeBet(index: number) {
+        // ❌ đã khóa cược
+        if (this.isBetLocked) return;
+
         if (this.money < this.currentBetValue) return;
 
         this.money -= this.currentBetValue;
@@ -92,11 +100,12 @@ export class BauCuaGame extends Component {
         if (!label) return;
 
         if (this.bets[index] > 0) {
-            label.string = `${this.animals[index]}\n${this.bets[index]}`;
+            label.string = `\n${MathUtil.formatNumber(this.bets[index])}`;
         } else {
-            label.string = `${this.animals[index]}`; // ❌ bỏ số 0
+            label.string = '';
         }
     }
+
     hasAnyBet(): boolean {
         return this.bets.some(v => v > 0);
     }
@@ -106,8 +115,10 @@ export class BauCuaGame extends Component {
     // =========================
     initResultButtons() {
         this.resultButtons.forEach((btn, index) => {
-            const label = btn.getComponentInChildren(Label);
-            if (label) label.string = '?';
+            const sprite = btn.getComponent(Sprite);
+            if (sprite) {
+                sprite.spriteFrame = this.unknownSprite;
+            }
 
             btn.node.on(Button.EventType.CLICK, () => {
                 this.openResult(index);
@@ -117,31 +128,29 @@ export class BauCuaGame extends Component {
 
     rollDice() {
         this.hasRolled = true;
+        this.isBetLocked = true;
 
         for (let i = 0; i < 3; i++) {
             this.results[i] = Math.floor(Math.random() * 6);
             this.openedResults[i] = false;
 
-            const label = this.resultButtons[i].getComponentInChildren(Label);
-            if (label) label.string = '?';
+            const sprite = this.resultButtons[i].getComponent(Sprite);
+            if (sprite) {
+                sprite.spriteFrame = this.unknownSprite;
+            }
         }
 
         this.replayButton.interactable = false;
-
-        console.log('Kết quả:', this.results);
     }
 
     openResult(index: number) {
 
-        // ❌ chưa cược
         if (!this.hasAnyBet()) return;
 
-        // ❌ chưa roll -> tự roll
         if (!this.hasRolled) {
             this.rollDice();
         }
 
-        // ❌ đã mở
         if (this.openedResults[index]) return;
 
         const result = this.results[index];
@@ -149,9 +158,24 @@ export class BauCuaGame extends Component {
 
         this.openedResults[index] = true;
 
+        // 🎲 set sprite
+        const sprite = this.resultButtons[index].getComponent(Sprite);
+        if (sprite) {
+            sprite.spriteFrame = this.animalSprites[result];
+        }
+
+        // 💰 HIỂN THỊ + / -
         const label = this.resultButtons[index].getComponentInChildren(Label);
         if (label) {
-            label.string = this.animals[result];
+            const bet = this.bets[result];
+
+            if (bet > 0) {
+                // ✅ trúng
+                const win = bet * 2;
+
+                label.string = `+${MathUtil.formatNumber(win)}`;
+                label.color = new Color(0, 255, 0);
+            }
         }
 
         // mở hết
@@ -176,7 +200,9 @@ export class BauCuaGame extends Component {
             const value = values[index];
 
             const label = btn.getComponentInChildren(Label);
-            if (label) label.string = value.toString();
+            if (label) {
+                label.string = MathUtil.formatNumber(value);
+            }
 
             btn.node.on(Button.EventType.CLICK, () => {
                 this.currentBetValue = value;
@@ -194,9 +220,9 @@ export class BauCuaGame extends Component {
             if (!label) return;
 
             if (index === this.selectedBetIndex) {
-                label.color = new Color(255, 215, 0); // vàng
+                label.color = new Color(255, 215, 0);
             } else {
-                label.color = new Color(0, 0, 0); // đen
+                label.color = new Color(255, 255, 255);
             }
         });
     }
@@ -226,26 +252,29 @@ export class BauCuaGame extends Component {
     // =========================
     onReplay() {
         this.hasRolled = false;
+        this.isBetLocked = false; // ✅ mở lại cược
 
-        // reset cược
         this.bets = [0, 0, 0, 0, 0, 0];
 
         this.betButtons.forEach((_, i) => {
             this.updateBetButtonText(i);
         });
 
-        // reset result data
         this.results = [-1, -1, -1];
         this.openedResults = [false, false, false];
 
-        // ⚠️ reset UI result về "?"
         for (let i = 0; i < this.resultButtons.length; i++) {
             const label = this.resultButtons[i].getComponentInChildren(Label);
-            if (label) {
-                label.string = '?';
-            }
+            if (label) label.string = '?';
         }
 
         this.replayButton.interactable = false;
+
+        for (let i = 0; i < this.resultButtons.length; i++) {
+            const sprite = this.resultButtons[i].getComponent(Sprite);
+            if (sprite) {
+                sprite.spriteFrame = this.unknownSprite;
+            }
+        }
     }
 }
