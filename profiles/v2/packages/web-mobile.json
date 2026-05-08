@@ -27,7 +27,12 @@
           "url": "db://assets/scenes/Game.scene",
           "uuid": "38078ae5-2cf5-4084-98a3-a1b3b679f124"
         }
-      ]
+      ],
+      "buildStageGroup": {
+        "build": [
+          "run"
+        ]
+      }
     },
     "taskOptionsMap": {
       "1776267493989": {

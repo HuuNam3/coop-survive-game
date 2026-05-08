@@ -1,10 +1,4 @@
-import {
-  _decorator,
-  Component,
-  EditBox,
-  Label,
-  director,
-} from "cc";
+import { _decorator, Component, EditBox, Label, director } from "cc";
 
 import { AuthManager } from "../managers/AuthManager";
 
@@ -21,32 +15,34 @@ export class LoginUI extends Component {
   @property(Label)
   messageLabel: Label = null;
 
+  async start() {
+    const res = await AuthManager.instance.getMe();
+    if (res.success) {
+      this.messageLabel.string =
+        "Đã đăng nhập tài khoản, đang chuyển sang màn hình chính...";
+      director.loadScene("Menu");
+    }
+  }
+
   async onLoginClick() {
     const email = this.emailInput.string;
     const password = this.passwordInput.string;
 
     if (!email || !password) {
-      this.messageLabel.string =
-        "Please enter email and password";
+      this.messageLabel.string = "Vui lòng nhập Email và Password";
       return;
     }
 
-    this.messageLabel.string = "Logging in...";
+    this.messageLabel.string = "Đang đăng nhập...";
 
-    const result =
-      await AuthManager.instance.login(
-        email,
-        password
-      );
+    const result = await AuthManager.instance.login(email, password);
 
     if (!result.success) {
-      this.messageLabel.string =
-        result.message;
+      this.messageLabel.string = result.message;
       return;
     }
 
-    this.messageLabel.string =
-      "Login successful";
+    this.messageLabel.string = "Đang chuyển sang màn hình chính...";
 
     // chuyển sang Menu scene
     director.loadScene("Menu");

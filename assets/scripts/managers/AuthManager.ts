@@ -13,14 +13,12 @@ export class AuthManager {
   }
 
   // API của bạn chạy port 4000
-  // private baseUrl = "http://127.0.0.1:4000";
-  private publicUrl = "https://backend-survive-game.onrender.com";
+  // private baseUrl = "http://localhost:4000";
+  private baseUrl = "https://backend-survive-game.onrender.com";
 
   async login(email: string, password: string) {
     try {
-      console.log("Calling API:", `${this.publicUrl}/auth/login`);
-
-      const response = await fetch(`${this.publicUrl}/auth/login`, {
+      const response = await fetch(`${this.baseUrl}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,8 +32,6 @@ export class AuthManager {
           password,
         }),
       });
-
-      console.log("Status:", response.status);
 
       const data = await response.json();
 
@@ -60,25 +56,42 @@ export class AuthManager {
     }
   }
 
-  async checkLogin() {
+  async getMe() {
     try {
-      const response = await fetch(`${this.publicUrl}/auth/me`, {
+      const response = await fetch(`${this.baseUrl}/auth/me`, {
         method: "GET",
         credentials: "include",
       });
 
-      console.log("Check login status:", response.status);
+      const data = await response.json();
 
-      return response.ok;
+      if (!response.ok) {
+        return {
+          success: false,
+          message: data.message || "Get me failed",
+        };
+      }
+
+      return {
+        success: true,
+        data: {
+          name: data.name || "Unknown",
+          userName: data.username || "Unknown",
+          money: data.money ?? 0,
+        },
+      };
     } catch (error) {
-      console.error("CHECK LOGIN ERROR:", error);
-      return false;
+      console.error("GET ME ERROR:", error);
+      return {
+        success: false,
+        message: "Network error",
+      };
     }
   }
 
   async logout() {
     try {
-      await fetch(`${this.publicUrl}/auth/logout`, {
+      await fetch(`${this.baseUrl}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });

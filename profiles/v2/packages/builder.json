@@ -39,8 +39,8 @@
         "progress": 1,
         "state": "success",
         "stage": "build",
-        "message": "5-4-2026 19:00:21 build success in 1 min 49 s!",
-        "detailMessage": "Asset DB is resume!\r",
+        "message": "5-5-2026 16:51:55 build -> run success in 1 min 12 s!",
+        "detailMessage": "build task(web-mobile) in 72364!\r",
         "options": {
           "name": "coop-survive",
           "server": "",
@@ -107,9 +107,14 @@
           },
           "packages": {},
           "__version__": "1.3.9",
-          "logDest": "project://temp/builder/log/web-mobile4-15-2026 22-38.log"
+          "logDest": "project://temp/builder/log/web-mobile4-15-2026 22-38.log",
+          "buildStageGroup": {
+            "build": [
+              "run"
+            ]
+          }
         },
-        "time": "5-4-2026 18:58:31",
+        "time": "5-5-2026 16:50:42",
         "dirty": false
       }
     }
