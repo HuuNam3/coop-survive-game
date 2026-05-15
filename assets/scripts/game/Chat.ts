@@ -13,6 +13,7 @@ import {
 import { SocketManager } from "../managers/SocketManager";
 import { AuthManager } from "../managers/AuthManager";
 import { BauCuaGame } from "./BauCuaGame";
+import { MathUtil } from "../utils/MathUtil";
 
 const { ccclass, property } = _decorator;
 
@@ -73,7 +74,8 @@ export class Chat extends Component {
     this.socket.on("gameResult", (data: { result: number[], payouts: any[] }) => {
         data.payouts.forEach(p => {
             if (p.totalWin > 0) {
-                this.addSystemMessage(`Chúc mừng ${p.playerName} đã thắng ${p.totalWin.toLocaleString()}!`);
+                const formattedWin = MathUtil.formatNumber(p.totalWin);
+                this.addSystemMessage(`Chúc mừng <color=#00ff00>${p.playerName}</color> đã thắng <color=#ffff00>${formattedWin}</color>!`);
             }
         });
     });

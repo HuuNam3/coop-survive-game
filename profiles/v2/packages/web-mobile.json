@@ -13,19 +13,15 @@
       "outputName": "web-mobile",
       "mainBundleCompressionType": "merge_dep",
       "platform": "web-mobile",
-      "startScene": "98121a62-b949-49e0-a93f-3d22103cc784",
+      "startScene": "ceaedbce-2a96-4881-94d5-54822bc3bbd0",
       "scenes": [
         {
-          "url": "db://assets/scenes/Login.scene",
-          "uuid": "98121a62-b949-49e0-a93f-3d22103cc784"
+          "url": "db://assets/scenes/Card/Home.scene",
+          "uuid": "ceaedbce-2a96-4881-94d5-54822bc3bbd0"
         },
         {
-          "url": "db://assets/scenes/Menu.scene",
-          "uuid": "e52cf552-dff2-4fe8-9d63-6b452ea887c5"
-        },
-        {
-          "url": "db://assets/scenes/Game.scene",
-          "uuid": "38078ae5-2cf5-4084-98a3-a1b3b679f124"
+          "url": "db://assets/scenes/Card/Battle.scene",
+          "uuid": "2ee986be-76a7-4cab-9e64-f4fa07458c51"
         }
       ],
       "buildStageGroup": {

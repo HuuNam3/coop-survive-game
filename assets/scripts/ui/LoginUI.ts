@@ -20,7 +20,7 @@ export class LoginUI extends Component {
     if (res.success) {
       this.messageLabel.string =
         "Đã đăng nhập tài khoản, đang chuyển sang màn hình chính...";
-      director.loadScene("Menu");
+      director.loadScene("Home");
     }
   }
 
@@ -45,6 +45,6 @@ export class LoginUI extends Component {
     this.messageLabel.string = "Đang chuyển sang màn hình chính...";
 
     // chuyển sang Menu scene
-    director.loadScene("Menu");
+    director.loadScene("Home");
   }
 }

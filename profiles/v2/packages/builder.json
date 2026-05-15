@@ -1,7 +1,7 @@
 {
   "__version__": "1.3.9",
   "log": {
-    "level": 1
+    "level": 2
   },
   "common": {
     "binGroupConfig": {
@@ -15,19 +15,15 @@
     "outputName": "web-mobile",
     "mainBundleCompressionType": "merge_dep",
     "platform": "web-mobile",
-    "startScene": "98121a62-b949-49e0-a93f-3d22103cc784",
+    "startScene": "ceaedbce-2a96-4881-94d5-54822bc3bbd0",
     "scenes": [
       {
-        "url": "db://assets/scenes/Login.scene",
-        "uuid": "98121a62-b949-49e0-a93f-3d22103cc784"
+        "url": "db://assets/scenes/Card/Home.scene",
+        "uuid": "ceaedbce-2a96-4881-94d5-54822bc3bbd0"
       },
       {
-        "url": "db://assets/scenes/Menu.scene",
-        "uuid": "e52cf552-dff2-4fe8-9d63-6b452ea887c5"
-      },
-      {
-        "url": "db://assets/scenes/Game.scene",
-        "uuid": "38078ae5-2cf5-4084-98a3-a1b3b679f124"
+        "url": "db://assets/scenes/Card/Battle.scene",
+        "uuid": "2ee986be-76a7-4cab-9e64-f4fa07458c51"
       }
     ]
   },
@@ -39,8 +35,8 @@
         "progress": 1,
         "state": "success",
         "stage": "build",
-        "message": "5-5-2026 16:51:55 build -> run success in 1 min 12 s!",
-        "detailMessage": "build task(web-mobile) in 72364!\r",
+        "message": "5-15-2026 10:50:13 build -> run success in 11 min 45 s!",
+        "detailMessage": "Asset DB is resume!\r",
         "options": {
           "name": "coop-survive",
           "server": "",
@@ -83,21 +79,17 @@
           "useSplashScreen": true,
           "bundleCommonChunk": false,
           "packAutoAtlas": true,
-          "startScene": "98121a62-b949-49e0-a93f-3d22103cc784",
+          "startScene": "ceaedbce-2a96-4881-94d5-54822bc3bbd0",
           "outputName": "web-mobile",
           "taskName": "web-mobile",
           "scenes": [
             {
-              "url": "db://assets/scenes/Login.scene",
-              "uuid": "98121a62-b949-49e0-a93f-3d22103cc784"
+              "url": "db://assets/scenes/Card/Home.scene",
+              "uuid": "ceaedbce-2a96-4881-94d5-54822bc3bbd0"
             },
             {
-              "url": "db://assets/scenes/Menu.scene",
-              "uuid": "e52cf552-dff2-4fe8-9d63-6b452ea887c5"
-            },
-            {
-              "url": "db://assets/scenes/Game.scene",
-              "uuid": "38078ae5-2cf5-4084-98a3-a1b3b679f124"
+              "url": "db://assets/scenes/Card/Battle.scene",
+              "uuid": "2ee986be-76a7-4cab-9e64-f4fa07458c51"
             }
           ],
           "wasmCompressionMode": false,
@@ -114,7 +106,7 @@
             ]
           }
         },
-        "time": "5-5-2026 16:50:42",
+        "time": "5-15-2026 10:38:28",
         "dirty": false
       }
     }

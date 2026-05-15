@@ -17,8 +17,8 @@ import { MathUtil } from "../utils/MathUtil";
 
 const { ccclass, property } = _decorator;
 
-@ccclass("MenuUi")
-export class MenuUi extends Component {
+@ccclass("MenuUI")
+export class MenuUI extends Component {
   @property(EditBox)
   roomIdEditBox: EditBox = null!;
 
